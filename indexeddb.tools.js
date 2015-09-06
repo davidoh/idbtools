@@ -50,7 +50,20 @@ window['idbtools'] =function(){
         });
     };
 
+    var getValue = function(dbName, storeName, key) {
+        openDb(dbName, function(db) {
+            var transaction = db.transaction(storeName, "readonly");
+            var objectStore = transaction.objectStore(storeName);
+            var request = objectStore.get(key);
+
+            request.onsuccess = function() {
+                console.log(request.result);
+            };
+        });
+    };
+
     return {
-        dumpStore: dumpStore
+        dumpStore: dumpStore,
+        getValue: getValue
     }
 }.call(this);

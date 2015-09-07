@@ -62,8 +62,25 @@ window['idbtools'] =function(){
         });
     };
 
+    var addValue = function(dbName, storeName, data){
+        openDb(dbName, function(db) {
+            var transaction = db.transaction(storeName, "readwrite");
+            var objectStore = transaction.objectStore(storeName);
+            var request = objectStore.add(data);
+
+            request.onsuccess = function() {
+                console.log("Saved datavalues");
+            };
+
+            request.onerror = function(e) {
+              console.log(e);
+            };
+        });
+    };
+
     return {
         dumpStore: dumpStore,
-        getValue: getValue
+        getValue: getValue,
+        addValue: addValue
     }
 }.call(this);

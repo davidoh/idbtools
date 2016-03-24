@@ -26,7 +26,7 @@ window['idbtools'] =function(){
             var values = [];
             for (var i = 0; i < fields.length; i++) {
                 var field = fields[i];
-                var value = row[field];
+                var value = JSON.stringify(row[field]);
                 values.push(value);
             }
             console.log(values.join(","));

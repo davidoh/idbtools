@@ -62,14 +62,14 @@ window['idbtools'] =function(){
         });
     };
 
-    var addValue = function(dbName, storeName, data){
+    var upsertValue = function(dbName, storeName, data){
         openDb(dbName, function(db) {
             var transaction = db.transaction(storeName, "readwrite");
             var objectStore = transaction.objectStore(storeName);
-            var request = objectStore.add(data);
+            var request = objectStore.put(data);
 
             request.onsuccess = function() {
-                console.log("Saved datavalues");
+                console.log("Saved record");
             };
 
             request.onerror = function(e) {
@@ -78,9 +78,26 @@ window['idbtools'] =function(){
         });
     };
 
+    var deleteValue = function(dbName, storeName, key){
+        openDb(dbName, function(db) {
+            var transaction = db.transaction(storeName, "readwrite");
+            var objectStore = transaction.objectStore(storeName);
+            var request = objectStore.delete(key);
+
+            request.onsuccess = function() {
+                console.log("Deleted record");
+            };
+
+            request.onerror = function(e) {
+                console.log(e);
+            };
+        });
+    };
+
     return {
         dumpStore: dumpStore,
         getValue: getValue,
-        addValue: addValue
+        upsertValue: upsertValue,
+        deleteValue: deleteValue
     }
 }.call(this);
